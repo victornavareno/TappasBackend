@@ -21,7 +21,7 @@ public class RestauranteController {
 
     //ENDPOINTS:
 
-    // DEVUELVE TODAS LAS CIUDADES DISPONIBLES EN NUESTRA BASE DE DATOS (SIN REPETICION)
+    // DEVUELVE TODAS LAS CIUDADES DISPONIBLES EN NUESTRA BASE DE DATOS (SIN REPETIR)
     @GetMapping("/ciudades")
     public List<String> listaCiudades(){
         return restauranteService.getCiudadesUnicas();
