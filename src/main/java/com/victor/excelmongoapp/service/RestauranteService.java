@@ -19,8 +19,11 @@ public class RestauranteService {
         return mongoTemplate.query(Restaurante.class).distinct("municipio").as(String.class).all();
     }
 
+    public List<String> getTapasUnicas(){
+        return mongoTemplate.query(Restaurante.class).distinct("platos").as(String.class).all();
+    }
+
     public List<Restaurante> getRestaurantesPorMunicipio(String municipio){
         return restauranteRepository.findDistinctByMunicipio(municipio);
     }
-
 }

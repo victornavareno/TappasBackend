@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/restaurantes")
+@RequestMapping("/restaurantes")
 @RequiredArgsConstructor
 public class RestauranteController {
 
@@ -27,9 +27,25 @@ public class RestauranteController {
         return restauranteService.getCiudadesUnicas();
     }
 
+    // DEVUELVE TODAS LAS TAPAS DISPONIBLES EN NUESTRA BASE DE DATOS (SIN REPETIR)
+    @GetMapping("/tapas")
+    public List<String> listaTapas(){
+        return restauranteService.getTapasUnicas();
+    }
+
     //DEVUELVE TODAS LOS RESTAURANTES EN UN MUNICIPIO ESPECIFICADO EN LA URL
     @GetMapping("/{municipio}")
     public List<Restaurante> listaRestaurantesMunicipio(@PathVariable String municipio){
-        return restauranteService.getRestaurantesPorMunicipio(municipio);
+        String municipioCaps = municipio.toUpperCase();
+        return restauranteService.getRestaurantesPorMunicipio(municipioCaps);
     }
+
+
+
+    // comidas
+
+    // top 3 restaurantes
+
+    //returnRestaurant{idRestaurante}
+
 }
