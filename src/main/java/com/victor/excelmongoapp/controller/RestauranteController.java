@@ -34,8 +34,13 @@ public class RestauranteController {
     @GetMapping("/top3/{tapa}/{ciudad}")
     public List<Restaurante> listaRestaurantesTop3(@PathVariable String tapa, @PathVariable String ciudad){
         String ciudadMayuscula = ciudad.toUpperCase();
-        String tapaMayuscula = tapa.toUpperCase();
-        return restauranteService.getTop3Restaurantes(ciudadMayuscula, tapaMayuscula);
+        return restauranteService.getTop3Restaurantes(ciudadMayuscula, tapa);
     }
+
+    @GetMapping("/id/{id}")
+    public Restaurante buscaRestaurante(@PathVariable String id) {
+        return restauranteService.getRestaurantById(id);
+    }
+
 
 }

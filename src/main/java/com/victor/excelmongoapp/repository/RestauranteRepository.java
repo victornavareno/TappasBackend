@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface RestauranteRepository extends MongoRepository<Restaurante, String> {
     List<Restaurante> findDistinctByMunicipio(String municipio);
-    List<Restaurante> findByMunicipioAndPlatosContainingIgnoreCase(String municipio, String plato);
+    List<Restaurante> findByMunicipioAndMejoresPlatosContainingIgnoreCase(String municipio, String plato);
 }

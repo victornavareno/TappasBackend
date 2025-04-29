@@ -1,10 +1,13 @@
 package com.victor.excelmongoapp.service;
 
+import com.victor.excelmongoapp.controller.RestauranteController;
 import com.victor.excelmongoapp.model.Restaurante;
 import com.victor.excelmongoapp.repository.RestauranteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -28,8 +31,17 @@ public class RestauranteService {
     }
 
     public List<Restaurante> getTop3Restaurantes(String ciudad, String tapa){
-        List<Restaurante> restaurantes = restauranteRepository.findByMunicipioAndPlatosContainingIgnoreCase(ciudad, tapa);
+        List<Restaurante> restaurantes = restauranteRepository.findByMunicipioAndMejoresPlatosContainingIgnoreCase(ciudad, tapa);
         restaurantes.sort((r1, r2) -> Double.compare(r2.getRating(), r1.getRating()));
         return restaurantes.stream().limit(3).toList();
     }
+
+
+    public Restaurante getRestaurantById(String idRestaurante) {
+        return restauranteRepository.findById(idRestaurante)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Restaurante no encontrado con id: " + idRestaurante
+                ));
+    }
+
 }
