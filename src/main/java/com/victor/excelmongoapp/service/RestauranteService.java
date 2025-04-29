@@ -26,4 +26,10 @@ public class RestauranteService {
     public List<Restaurante> getRestaurantesPorMunicipio(String municipio){
         return restauranteRepository.findDistinctByMunicipio(municipio);
     }
+
+    public List<Restaurante> getTop3Restaurantes(String ciudad, String tapa){
+        List<Restaurante> restaurantes = restauranteRepository.findByMunicipioAndPlatosContainingIgnoreCase(ciudad, tapa);
+        restaurantes.sort((r1, r2) -> Double.compare(r2.getRating(), r1.getRating()));
+        return restaurantes.stream().limit(3).toList();
+    }
 }

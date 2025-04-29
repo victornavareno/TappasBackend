@@ -5,7 +5,7 @@ import com.victor.excelmongoapp.repository.RestauranteRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor // inyecta el repo sin usar @Autowired
+@RequiredArgsConstructor
 public class ExcelService {
 
     private final RestauranteRepository restauranteRepository;
@@ -32,7 +32,7 @@ public class ExcelService {
         try {
             return Optional.ofNullable(row.getCell(index))
                     .filter(cell -> cell.getCellType() == CellType.NUMERIC)
-                    .map(org.apache.poi.ss.usermodel.Cell::getNumericCellValue)
+                    .map(Cell::getNumericCellValue)
                     .orElse(0.0);
         } catch (Exception e) {
             return 0.0;
@@ -49,7 +49,7 @@ public class ExcelService {
             } else if (cell.getCellType() == CellType.STRING) {
                 String value = cell.getStringCellValue().trim();
                 if (!value.isEmpty()) {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Ajusta según sea necesario
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     return LocalDate.parse(value, formatter);
                 }
             }
@@ -60,7 +60,7 @@ public class ExcelService {
         return null;
     }
 
-    private double parseValoracion(Cell cell) {
+    private double parseRating(Cell cell) {
         if (cell == null) return 0.0;
         try {
             String raw = cell.toString().replace(",", ".").trim();
@@ -70,34 +70,63 @@ public class ExcelService {
         }
     }
 
+    private LocalDate parseFecha(String fechaStr) {
+        try {
+            if (fechaStr.contains("-")) {
+                return LocalDate.parse(fechaStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            } else {
+                return LocalDate.parse(fechaStr, DateTimeFormatter.ofPattern("yyyyMMdd"));
+            }
+        } catch (Exception e) {
+            System.err.println("Fecha inválida: " + fechaStr);
+            return null;
+        }
+    }
 
     public List<Restaurante> importarExcel(MultipartFile file) {
         List<Restaurante> lista = new ArrayList<>();
 
         try (InputStream is = file.getInputStream(); Workbook workbook = WorkbookFactory.create(is)) {
+            restauranteRepository.deleteAll();
+
             Sheet sheet = workbook.getSheetAt(0);
 
             for (Row row : sheet) {
                 if (row.getRowNum() == 0) continue; // Saltar encabezado
+
+                // Evitar procesar filas completamente vacías
+                if (rowIsEmpty(row)) continue;
 
                 Restaurante r = new Restaurante();
 
                 r.setProvincia(getCellString(row, 0));
                 r.setModalidad(getCellString(row, 1));
                 r.setTipoRecurso(getCellString(row, 2));
+
                 r.setCategoria(getCellString(row, 3));
                 r.setFechaApertura(getCellAsLocalDate(row, 4));
+
                 r.setNombre(getCellString(row, 5));
                 r.setMunicipio(getCellString(row, 6));
                 r.setDireccion(getCellString(row, 7));
-                r.setCodigoPostal((int) getCellNumeric(row, 8));
-                r.setWeb("SI".equalsIgnoreCase(getCellString(row, 9)));
-                r.setPlazas((int) getCellNumeric(row, 10));
 
-                r.setPlatos(Arrays.asList(getCellString(row, 11).split(",")));
+                String cpRaw = getCellString(row, 8).replaceAll("[^0-9]", "");
+                r.setCodigoPostal(cpRaw.isEmpty() ? 0 : Integer.parseInt(cpRaw));
+
+                r.setWeb("SÍ".equalsIgnoreCase(getCellString(row, 9)));
+
+                String plazasStr = getCellString(row, 10).replaceAll("[^0-9]", "");
+                r.setPlazas(plazasStr.isEmpty() ? 0 : Integer.parseInt(plazasStr));
+
+                String platosStr = getCellString(row, 11);
+//                if (platosStr.contains("Jamón Ibér")) {
+//                    platosStr = platosStr.replace("Jamón Ibér", "Jamón Ibérico");
+//                }
+                r.setPlatos(Arrays.asList(platosStr.split(",")));
+
                 r.setMejoresPlatos(Arrays.asList(getCellString(row, 12).split(",")));
 
-                r.setValoracion(parseValoracion(row.getCell(13)));
+                r.setRating(parseRating(row.getCell(13)));
 
                 lista.add(r);
             }
@@ -109,4 +138,13 @@ public class ExcelService {
         }
     }
 
+    private boolean rowIsEmpty(Row row) {
+        for (int i = 0; i < row.getLastCellNum(); i++) {
+            Cell cell = row.getCell(i);
+            if (cell != null && cell.getCellType() != CellType.BLANK && !cell.toString().trim().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

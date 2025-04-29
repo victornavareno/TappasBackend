@@ -31,5 +31,5 @@ public class Restaurante {
     private int plazas;
     private List<String> platos;
     private List<String> mejoresPlatos;
-    private double valoracion;
+    private double rating;
 }
