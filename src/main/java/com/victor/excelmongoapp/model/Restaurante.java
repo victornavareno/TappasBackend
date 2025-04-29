@@ -32,4 +32,5 @@ public class Restaurante {
     private List<String> platos;
     private List<String> mejoresPlatos;
     private double rating;
+    private String imagen;
 }

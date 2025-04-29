@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.random.RandomGenerator;
 
 @Service
 @RequiredArgsConstructor
@@ -70,18 +71,14 @@ public class ExcelService {
         }
     }
 
-    private LocalDate parseFecha(String fechaStr) {
-        try {
-            if (fechaStr.contains("-")) {
-                return LocalDate.parse(fechaStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            } else {
-                return LocalDate.parse(fechaStr, DateTimeFormatter.ofPattern("yyyyMMdd"));
-            }
-        } catch (Exception e) {
-            System.err.println("Fecha inválida: " + fechaStr);
-            return null;
-        }
+
+    private String setImage(){
+        // I create a random number between 1 and 17 both included
+        RandomGenerator random = RandomGenerator.getDefault();
+        int imageNumber = random.nextInt(1,18);
+        return "restaurant" + imageNumber + ".png";
     }
+
 
     public List<Restaurante> importarExcel(MultipartFile file) {
         List<Restaurante> lista = new ArrayList<>();
@@ -127,6 +124,8 @@ public class ExcelService {
                 r.setMejoresPlatos(Arrays.asList(getCellString(row, 12).split(",")));
 
                 r.setRating(parseRating(row.getCell(13)));
+
+                r.setImagen(setImage());
 
                 lista.add(r);
             }

@@ -16,6 +16,11 @@ public class RestauranteController {
     private final RestauranteRepository restauranteRepository;
     private final RestauranteService restauranteService;
 
+    @GetMapping("/all")
+    public List<Restaurante> getAllRestaurantes(){
+        return restauranteRepository.findAll();
+    }
+
     @GetMapping("/ciudades")
     public List<String> listaCiudades() {
         return restauranteService.getCiudadesUnicas();
