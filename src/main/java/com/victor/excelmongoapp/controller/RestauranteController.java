@@ -10,6 +10,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/restaurantes")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*") // Añade esta anotación
 public class RestauranteController {
 
     private final RestauranteRepository restauranteRepository;
@@ -41,6 +42,5 @@ public class RestauranteController {
     public Restaurante buscaRestaurante(@PathVariable String id) {
         return restauranteService.getRestaurantById(id);
     }
-
 
 }
