@@ -26,6 +26,10 @@ public class RestauranteService {
         return mongoTemplate.query(Restaurante.class).distinct("platos").as(String.class).all();
     }
 
+    public List<String> getRestaurantesUnicos(){
+        return mongoTemplate.query(Restaurante.class).distinct("nombre").as(String.class).all();
+    }
+
     public List<Restaurante> getRestaurantesPorMunicipio(String municipio){
         return restauranteRepository.findDistinctByMunicipio(municipio);
     }

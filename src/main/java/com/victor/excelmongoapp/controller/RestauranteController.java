@@ -31,6 +31,11 @@ public class RestauranteController {
         return restauranteService.getTapasUnicas();
     }
 
+    @GetMapping("/nombres")
+    public List<String> listaRestaurantes(){
+        return restauranteService.getRestaurantesUnicos();
+    }
+
     @GetMapping("/{ciudad}")
     public List<Restaurante> listaRestaurantesMunicipio(@PathVariable String ciudad) {
         String ciudadMayuscula = ciudad.toUpperCase();
