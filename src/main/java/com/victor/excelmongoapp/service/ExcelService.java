@@ -75,7 +75,7 @@ public class ExcelService {
     private String setImage(){
         // I create a random number between 1 and 17 both included
         RandomGenerator random = RandomGenerator.getDefault();
-        int imageNumber = random.nextInt(1,18);
+        int imageNumber = random.nextInt(1,51);
         return "restaurant" + imageNumber + ".png";
     }
 
@@ -116,9 +116,6 @@ public class ExcelService {
                 r.setPlazas(plazasStr.isEmpty() ? 0 : Integer.parseInt(plazasStr));
 
                 String platosStr = getCellString(row, 11);
-//                if (platosStr.contains("Jamón Ibér")) {
-//                    platosStr = platosStr.replace("Jamón Ibér", "Jamón Ibérico");
-//                }
                 r.setPlatos(Arrays.asList(platosStr.split(",")));
 
                 r.setMejoresPlatos(Arrays.asList(getCellString(row, 12).split(",")));
