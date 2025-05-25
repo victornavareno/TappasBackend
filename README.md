@@ -17,7 +17,10 @@ Tappas es una aplicación backend desarrollada en Spring Boot que importa datos 
 
 **GET /api/restaurantes/podium**  Top 3 restaurantes según valoración.
 
-## Base de datos
+## Bases de datos
+
+![image](https://github.com/user-attachments/assets/dccb4269-5bfe-4ebe-927f-c32547682c0e)
+
 
 Nuestra API se conecta a una base de datos no relacional en MongoDB cargada en una imagen Docker con el dataset de restaurantes de la región.
 
