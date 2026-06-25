@@ -1,6 +1,5 @@
-# Tappas Backend
 ![image](https://github.com/user-attachments/assets/21f2039d-3013-4d75-a501-3639cb56d75c)
-Tappas is a backend application developed in Spring Boot. It imports updated data from a dataset containing all the restaurants in Extremadura, Spain, and exposes it through a REST API connected to MongoDB. It also implements a Redis cache to minimize LFU connections and response time.
+A backend application developed in Spring Boot. It imports real restaurant updated data from a dataset, formats and exposes it through a REST API connected to MongoDB. It also implements a Redis cache to minimize LFU connections and response time.
 
 Its purpose is to make it easier for users to find the best restaurants based on their city and the dish they want to eat.
 
