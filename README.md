@@ -1,21 +1,28 @@
 # Tappas Backend
 ![image](https://github.com/user-attachments/assets/21f2039d-3013-4d75-a501-3639cb56d75c)
-Tappas is a backend application developed in Spring Boot that imports data from a dataset containing all the restaurants in Extremadura from an Excel file, and exposes it through a REST API connected to MongoDB. Its purpose is to make it easier for users to find the best restaurants based on their city and the dish they want to eat.
+Tappas is a backend application developed in Spring Boot. It imports updated data from a dataset containing all the restaurants in Extremadura, Spain, and exposes it through a REST API connected to MongoDB. It also implements a Redis cache to minimize LFU connections and response time.
 
-## Databases
-![image](https://github.com/user-attachments/assets/dccb4269-5bfe-4ebe-927f-c32547682c0e)
-Our API connects to a non-relational MongoDB database running in a Docker image, which is loaded with the dataset of restaurants in the region.
+Its purpose is to make it easier for users to find the best restaurants based on their city and the dish they want to eat.
+
+---
+
+### Databases
+The API connects to a non-relational MongoDB database running in a Docker container, which is loaded with the dataset of restaurants in the region of your choice.
 
 
 
-## Redis: Performance Optimization
+### Redis: Performance Optimization
 Additionally, Tappas integrates Redis as a caching system to speed up the most frequent responses, such as:
 
 - Repeated queries by city and dish.
 
-- Top 3 restaurant podium results.
+- Top 3 restaurant priorization algorithm based on user reviews.
 
-- Precaching of popular searches based on user usage patterns.
+- Precaching popular searches based on user usage patterns.
 
-## Restaurant Podium Preview
-<img width="500" height="400" alt="image" src="https://github.com/user-attachments/assets/6232712b-f253-44a6-883b-f2e0bdaa7ecd" />
+---
+
+### Restaurant Podium Feature Preview
+<img width="550" height="400" alt="tappas by Victor Navareño" src="https://github.com/user-attachments/assets/6232712b-f253-44a6-883b-f2e0bdaa7ecd" />
+
+## by Victor Navareño
