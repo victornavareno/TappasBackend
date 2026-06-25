@@ -6,7 +6,7 @@ Its purpose is to make it easier for users to find the best restaurants based on
 
 ---
 
-### Databases
+## Databases
 The API connects to a non-relational MongoDB database running in a Docker container, which is loaded with the dataset of restaurants in the region of your choice.
 
 
@@ -22,7 +22,7 @@ Additionally, Tappas integrates Redis as a caching system to speed up the most f
 
 ---
 
-### Restaurant Podium Feature Preview
-<img width="550" height="400" alt="tappas by Victor Navareño" src="https://github.com/user-attachments/assets/6232712b-f253-44a6-883b-f2e0bdaa7ecd" />
+<img width="850" height="500" alt="image" src="https://github.com/user-attachments/assets/5e200ef8-7664-4d1a-98b6-0dea71b3e314" />
 
-## by Victor Navareño
+
+## Victor Navareño
